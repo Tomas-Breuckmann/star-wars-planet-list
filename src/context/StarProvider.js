@@ -3,6 +3,7 @@ import StarContext from './StarContext';
 
 function StarProvider(props) {
   const [data, setData] = useState([]);
+  const [namePlanet, setNamePlanet] = useState({ filterByName: { name: '' } });
   const { children } = props;
 
   useEffect(() => {
@@ -20,7 +21,7 @@ function StarProvider(props) {
   }, []);
 
   return (
-    <StarContext.Provider value={ { data, setData } }>
+    <StarContext.Provider value={ { data, setData, namePlanet, setNamePlanet } }>
       {children}
     </StarContext.Provider>
   );

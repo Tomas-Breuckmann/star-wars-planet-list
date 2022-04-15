@@ -3,7 +3,10 @@ import StarContext from '../context/StarContext';
 
 function Table() {
   const { data } = useContext(StarContext);
-  console.log(data);
+  // console.log(data);
+  const { namePlanet: { filterByName: { name } } } = useContext(StarContext);
+  const dataFilterName = data.filter((planet) => planet.name.includes(name));
+  // console.log(data);
   return (
     <>
       <h1>StarWars</h1>
@@ -27,7 +30,7 @@ function Table() {
           </tr>
         </thead>
         <tbody>
-          {data.map((planet, index) => (
+          {dataFilterName.map((planet, index) => (
             <tr key={ index }>
               <td>{planet.name}</td>
               <td>{planet.rotation_period}</td>
