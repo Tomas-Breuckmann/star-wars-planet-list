@@ -1,12 +1,19 @@
 import React, { useContext, useState } from 'react';
 import StarContext from '../context/StarContext';
 
+const FILTERS = ['population',
+  'orbital_period', 'diameter', 'rotation_period', 'surface_water'];
+// console.log(FILTERS);
+
 function Filters() {
   // globa state
   const { namePlanet: { filterByName: { name } } } = useContext(StarContext);
   const { setNamePlanet } = useContext(StarContext);
   const { filters, setFilters } = useContext(StarContext);
-
+  const renderWithoutFilters = filters.map((filter) => Object.values(filter)[0]);
+  // console.log(renderWithoutFilters);
+  const FilterToRender = FILTERS.filter((filtr) => !renderWithoutFilters.includes(filtr));
+  // console.log(FilterToRender);
   // local state
   const [filterValues, setFilterValues] = useState({
     column: 'population',
@@ -41,11 +48,15 @@ function Filters() {
             onChange={ (event) => setFilterValues({
               ...filterValues, column: event.target.value }) }
           >
-            <option value="population">population</option>
+            {/* <option value="population">population</option>
             <option value="orbital_period">orbital_period</option>
             <option value="diameter">diameter</option>
             <option value="rotation_period">rotation_period</option>
-            <option value="surface_water">surface_water</option>
+            <option value="surface_water">surface_water</option> */}
+            {
+              FilterToRender.map((filtr, index) => (
+                <option key={ index } value={ filtr }>{ filtr }</option>))
+            }
           </select>
         </label>
         <label htmlFor="comparisonFilter">

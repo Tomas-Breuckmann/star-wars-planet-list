@@ -5,11 +5,10 @@ function Table() {
   const { data } = useContext(StarContext);
   const { namePlanet: { filterByName: { name } } } = useContext(StarContext);
   const { filters } = useContext(StarContext);
-  console.log(filters);
+  // console.log(filters);
   const dataFilterName = data.filter((planet) => planet.name.includes(name));
 
   const handleFilter = (dataForFilter) => {
-    // console.log(filters.length);
     let aux = dataForFilter;
     filters.forEach((filtr) => {
       const { column, comparison, value } = filtr;
