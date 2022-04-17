@@ -1,28 +1,85 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import StarContext from '../context/StarContext';
 
 function Filters() {
+  // globa state
   const { namePlanet: { filterByName: { name } } } = useContext(StarContext);
   const { setNamePlanet } = useContext(StarContext);
-  // console.log(name);
+  const { setFilters } = useContext(StarContext);
 
-  const handleChange = (event) => {
-    // console.log('estou na handleChange');
-    setNamePlanet({ filterByName: { name: event.target.value } });
-  };
+  // local state
+  const [filterValues, setFilterValues] = useState({
+    column: 'population',
+    comparison: 'maior que',
+    value: 0,
+  });
+  // console.log('local filter', filterValues);
+  // console.log('global filters', filters);
 
   return (
     <>
       <h1>Filters</h1>
-      <label htmlFor="nameFilter">
-        <input
-          type="text"
-          name="nameFilter"
-          data-testid="name-filter"
-          onChange={ handleChange }
-          value={ name }
-        />
-      </label>
+      <div>
+        <label htmlFor="nameFilter">
+          Name:
+          <input
+            type="text"
+            name="nameFilter"
+            data-testid="name-filter"
+            onChange={ (event) => setNamePlanet({
+              filterByName: { name: event.target.value } }) }
+            value={ name }
+          />
+        </label>
+      </div>
+      <div>
+        <label htmlFor="columnFilter">
+          Choose collumn:
+          <select
+            name="columnFilter"
+            data-testid="column-filter"
+            onChange={ (event) => setFilterValues({
+              ...filterValues, column: event.target.value }) }
+          >
+            <option value="population">population</option>
+            <option value="orbital_period">orbital_period</option>
+            <option value="diameter">diameter</option>
+            <option value="rotation_period">rotation_period</option>
+            <option value="surface_water">surface_water</option>
+          </select>
+        </label>
+        <label htmlFor="comparisonFilter">
+          Choose comparison type:
+          <select
+            name="comparisonFilter"
+            data-testid="comparison-filter"
+            onChange={ (event) => setFilterValues({
+              ...filterValues, comparison: event.target.value }) }
+          >
+            <option value="maior que">maior que</option>
+            <option value="igual a">igual a</option>
+            <option value="menor que">menor que</option>
+          </select>
+        </label>
+        <label htmlFor="valueFilter">
+          Choose value:
+          <input
+            data-testid="value-filter"
+            type="number"
+            name="valueFilter"
+            value={ filterValues.value }
+            onChange={ (event) => setFilterValues({
+              ...filterValues, value: Number(event.target.value) }) }
+          />
+        </label>
+        <button
+          type="button"
+          data-testid="button-filter"
+          onClick={ () => setFilters([filterValues]) }
+        >
+          Filtrar
+        </button>
+      </div>
     </>
   );
 }
