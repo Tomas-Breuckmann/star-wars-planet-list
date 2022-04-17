@@ -5,23 +5,29 @@ function Table() {
   const { data } = useContext(StarContext);
   const { namePlanet: { filterByName: { name } } } = useContext(StarContext);
   const { filters } = useContext(StarContext);
+  console.log(filters);
   const dataFilterName = data.filter((planet) => planet.name.includes(name));
 
   const handleFilter = (dataForFilter) => {
-    const { column, comparison, value } = filters[0];
-    // console.log(filters[0]);
-    // console.log(typeof value);
-    // console.log(dataForFilter);
-    switch (comparison) {
-    case 'maior que':
-      return dataForFilter.filter((planet) => planet[column] > value);
-    case 'menor que':
-      return dataForFilter.filter((planet) => planet[column] < value);
-    case 'igual a':
-      return dataForFilter.filter((planet) => Number(planet[column]) === value);
-    default:
-      return dataForFilter;
-    }
+    // console.log(filters.length);
+    let aux = dataForFilter;
+    filters.forEach((filtr) => {
+      const { column, comparison, value } = filtr;
+      switch (comparison) {
+      case 'maior que':
+        aux = aux.filter((planet) => planet[column] > value);
+        break;
+      case 'menor que':
+        aux = aux.filter((planet) => planet[column] < value);
+        break;
+      case 'igual a':
+        aux = aux.filter((planet) => Number(planet[column]) === value);
+        break;
+      default:
+        break;
+      }
+    });
+    return aux;
   };
 
   const dataWithFilters = filters.length > 0

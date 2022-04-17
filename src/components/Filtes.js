@@ -5,7 +5,7 @@ function Filters() {
   // globa state
   const { namePlanet: { filterByName: { name } } } = useContext(StarContext);
   const { setNamePlanet } = useContext(StarContext);
-  const { setFilters } = useContext(StarContext);
+  const { filters, setFilters } = useContext(StarContext);
 
   // local state
   const [filterValues, setFilterValues] = useState({
@@ -75,7 +75,7 @@ function Filters() {
         <button
           type="button"
           data-testid="button-filter"
-          onClick={ () => setFilters([filterValues]) }
+          onClick={ () => setFilters([...filters, filterValues]) }
         >
           Filtrar
         </button>
