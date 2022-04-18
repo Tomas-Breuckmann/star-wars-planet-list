@@ -23,6 +23,11 @@ function Filters() {
   // console.log('local filter', filterValues);
   // console.log('global filters', filters);
 
+  const handleRemoveFilter = (filtr) => {
+    const newFilters = filters.filter((obj) => obj.column !== filtr.column);
+    setFilters(newFilters);
+  };
+
   return (
     <>
       <h1>Filters</h1>
@@ -48,11 +53,6 @@ function Filters() {
             onChange={ (event) => setFilterValues({
               ...filterValues, column: event.target.value }) }
           >
-            {/* <option value="population">population</option>
-            <option value="orbital_period">orbital_period</option>
-            <option value="diameter">diameter</option>
-            <option value="rotation_period">rotation_period</option>
-            <option value="surface_water">surface_water</option> */}
             {
               FilterToRender.map((filtr, index) => (
                 <option key={ index } value={ filtr }>{ filtr }</option>))
@@ -90,6 +90,43 @@ function Filters() {
         >
           Filtrar
         </button>
+        <div>
+          {
+            filters.map((filtr, index) => (
+              <div key={ index } data-testid="filter">
+                <p>
+                  Filtro:
+                  {' '}
+                  { filtr.column }
+                  {' '}
+                  { filtr.comparison }
+                  {' '}
+                  { filtr.value }
+                </p>
+                <button
+                  type="button"
+                  // data-testid="button-remove-filters"
+                  onClick={ () => handleRemoveFilter(filtr) }
+                >
+                  Remover
+                </button>
+              </div>
+            ))
+          }
+        </div>
+        <div>
+          {
+            filters.length > 0 && (
+              <button
+                type="button"
+                data-testid="button-remove-filters"
+                onClick={ () => setFilters([]) }
+              >
+                Remover filtros
+              </button>
+            )
+          }
+        </div>
       </div>
     </>
   );
