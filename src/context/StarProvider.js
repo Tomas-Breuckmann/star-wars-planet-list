@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 import StarContext from './StarContext';
 
 function StarProvider(props) {
@@ -38,5 +39,9 @@ function StarProvider(props) {
     </StarContext.Provider>
   );
 }
+
+StarProvider.propTypes = {
+  children: PropTypes.node.isRequired,
+};
 
 export default StarProvider;
