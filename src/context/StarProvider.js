@@ -6,6 +6,7 @@ function StarProvider(props) {
   const [data, setData] = useState([]);
   const [namePlanet, setNamePlanet] = useState({ filterByName: { name: '' } });
   const [filters, setFilters] = useState([]);
+  const [order, setOrder] = useState({ order: { column: 'name', sort: 'ASC' } });
   const { children } = props;
 
   useEffect(() => {
@@ -29,6 +30,8 @@ function StarProvider(props) {
     setNamePlanet,
     filters,
     setFilters,
+    order,
+    setOrder,
   };
 
   return (

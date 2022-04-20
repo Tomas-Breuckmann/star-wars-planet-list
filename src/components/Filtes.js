@@ -1,39 +1,51 @@
 import React, { useContext, useState } from 'react';
 import StarContext from '../context/StarContext';
+import style from './Filter.module.css';
 
 const FILTERS = ['population',
   'orbital_period', 'diameter', 'rotation_period', 'surface_water'];
 // console.log(FILTERS);
 
 function Filters() {
-  // globa state
+  // global state
   const { namePlanet: { filterByName: { name } } } = useContext(StarContext);
   const { setNamePlanet } = useContext(StarContext);
-  const { filters, setFilters } = useContext(StarContext);
+  const { filters, setFilters, setOrder } = useContext(StarContext);
+  // const { filterOrder, setFilterOrder } = useContext(StarContext);
   const renderWithoutFilters = filters.map((filter) => Object.values(filter)[0]);
-  // console.log(renderWithoutFilters);
   const FilterToRender = FILTERS.filter((filtr) => !renderWithoutFilters.includes(filtr));
-  // console.log(FilterToRender);
+
   // local state
   const [filterValues, setFilterValues] = useState({
     column: 'population',
     comparison: 'maior que',
     value: 0,
   });
-  // console.log('local filter', filterValues);
-  // console.log('global filters', filters);
+  const [filterOrder, setFilterOrder] = useState({
+    order: {
+      column: 'population',
+      sort: 'ASC',
+    },
+  });
 
   const handleRemoveFilter = (filtr) => {
     const newFilters = filters.filter((obj) => obj.column !== filtr.column);
     setFilters(newFilters);
   };
 
+  const handleFilterOrder = (value) => {
+    setFilterOrder({
+      order: { ...filterOrder.order, sort: value },
+    });
+  };
+
   return (
-    <>
-      <h1>Filters</h1>
-      <div>
+    <div className="body">
+
+      <div className={ style.textFilter }>
         <label htmlFor="nameFilter">
           Name:
+          {' '}
           <input
             type="text"
             name="nameFilter"
@@ -44,7 +56,8 @@ function Filters() {
           />
         </label>
       </div>
-      <div>
+
+      <div className={ style.generalFilter }>
         <label htmlFor="columnFilter">
           Choose collumn:
           <select
@@ -90,10 +103,60 @@ function Filters() {
         >
           Filtrar
         </button>
+      </div>
+
+      <div>
+        <label htmlFor="filterSelectAscDes">
+          <select
+            name="filterSelectAscDes"
+            data-testid="column-sort"
+            onChange={ (event) => setFilterOrder({
+              order: { ...filterOrder.order, column: event.target.value },
+            }) }
+          >
+            <option name="population">population</option>
+            <option name="orbital_period">orbital_period</option>
+            <option name="diameter">diameter</option>
+            <option name="rotation_period">rotation_period</option>
+            <option name="surface_water">surface_water</option>
+          </select>
+        </label>
+        <label name="ascDes" htmlFor="asc">
+          Ascendente
+          <input
+            id="asc"
+            type="radio"
+            name="ascDes"
+            data-testid="column-sort-input-asc"
+            value="ASC"
+            onChange={ (event) => handleFilterOrder(event.target.value) }
+          />
+        </label>
+        <label name="ascDes" htmlFor="des">
+          Descendente
+          <input
+            id="des"
+            type="radio"
+            name="ascDes"
+            data-testid="column-sort-input-desc"
+            value="DESC"
+            onChange={ (event) => handleFilterOrder(event.target.value) }
+          />
+        </label>
+        <button
+          type="button"
+          data-testid="column-sort-button"
+          onClick={ () => setOrder(filterOrder) }
+        >
+          Ordenar
+        </button>
+      </div>
+
+      <div className={ style.activeFilters }>
         <div>
           {
             filters.map((filtr, index) => (
-              <div key={ index } data-testid="filter">
+              <div key={ index } data-testid="filter" className={ style.activeOneFilter }>
                 <p>
                   Filtro:
                   {' '}
@@ -119,6 +182,7 @@ function Filters() {
             filters.length > 0 && (
               <button
                 type="button"
+                className={ style.removeAll }
                 data-testid="button-remove-filters"
                 onClick={ () => setFilters([]) }
               >
@@ -128,7 +192,7 @@ function Filters() {
           }
         </div>
       </div>
-    </>
+    </div>
   );
 }
 

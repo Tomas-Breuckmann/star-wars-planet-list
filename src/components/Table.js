@@ -5,7 +5,8 @@ function Table() {
   const { data } = useContext(StarContext);
   const { namePlanet: { filterByName: { name } } } = useContext(StarContext);
   const { filters } = useContext(StarContext);
-  // console.log(filters);
+  const { order } = useContext(StarContext);
+  // console.log(order);
   const dataFilterName = data.filter((planet) => planet.name.includes(name));
 
   const handleFilter = (dataForFilter) => {
@@ -31,7 +32,39 @@ function Table() {
 
   const dataWithFilters = filters.length > 0
     ? handleFilter(dataFilterName) : dataFilterName;
-  // console.log('data com os filtros', dataWithFilters);
+
+  const handleSort = (array) => {
+    const mOne = -1;
+    const resposta = array.sort((a, b) => {
+      // console.log(a.name, b.name);
+      const fa = a.name.toLowerCase();
+      const fb = b.name.toLowerCase();
+      if (fa < fb) {
+        return mOne;
+      }
+      if (fa > fb) {
+        return 1;
+      }
+      return 0;
+    });
+    return resposta.reverse();
+  };
+
+  const handleOrder = () => {
+    // console.log('estou no use effect da table', order);
+    // console.log(dataWithFilters);
+    const { column, sort } = order.order;
+    const numbers = dataWithFilters.filter((planet) => planet[column] !== 'unknown');
+    const notNumbers = dataWithFilters.filter((planet) => planet[column] === 'unknown');
+    // fazer um if ternario aquo com se column==='name' fazer somente o sort
+    const newa = column === 'name'
+      ? handleSort(numbers)
+      : numbers.sort((a, b) => Number(b[column]) - Number(a[column]));
+    // console.log(newa);
+    const newReverse = sort === 'ASC' ? newa.reverse() : newa;
+    return [...newReverse, ...notNumbers];
+  };
+  const dataToRender = handleOrder();
 
   return (
     <>
@@ -56,9 +89,9 @@ function Table() {
           </tr>
         </thead>
         <tbody>
-          {dataWithFilters.map((planet, index) => (
+          {dataToRender.map((planet, index) => (
             <tr key={ index }>
-              <td>{planet.name}</td>
+              <td data-testid="planet-name">{planet.name}</td>
               <td>{planet.rotation_period}</td>
               <td>{planet.orbital_period}</td>
               <td>{planet.diameter}</td>

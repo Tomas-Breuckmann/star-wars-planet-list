@@ -1,0 +1,42 @@
+.textFilter {
+  background-color: var(--cor-secundaria);
+  color: var(--cor-detalhes);
+  display: flex;
+  justify-content: center;
+  margin: 5px;
+  padding: 10px 0;
+}
+
+.generalFilter {
+  background-color: var(--cor-secundaria);
+  color: var(--cor-detalhes);
+  display: flex;
+  justify-content: space-evenly;
+  margin: 5px;
+  padding: 10px 0;
+}
+
+.activeFilters {
+  background-color: var(--cor-secundaria);
+  color: var(--cor-detalhes);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  margin: 5px;
+  padding: 10px 0;
+}
+
+.activeOneFilter {
+  display: flex;
+  justify-content: flex-start;
+  margin: 8px;
+}
+
+.activeOneFilter p {
+  margin-right: 8px;
+}
+
+.removeAll {
+  margin-left: 16px;
+  padding: 4px;
+}

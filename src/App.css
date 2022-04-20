@@ -1,3 +1,32 @@
+:root {
+
+  --cor-primaria: rgb(155, 165, 219);
+
+  --cor-secundaria: black;
+
+  --cor-detalhes: rgb(255, 138, 42);
+
+  --cor-detalhes-fraca: rgb(255, 138, 42, 0.5);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.body {
+  margin: auto;
+  width: 90%;
+}
+
+#root {
+  background-color: var(--cor-primaria);
+  height: max-content;
+  min-height: 100%;
+  overflow: hidden;
+}
+
 .App {
   text-align: center;
 }
